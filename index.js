@@ -83,8 +83,9 @@ class CsvService {
       return this;
     }
   
-    print() {
-      this.formattedRows.forEach(row => console.log(row));
+    print({ withHeaders = true } = {}) {
+      const toPrint = withHeaders ? this.formattedRows : this.formattedRows.slice(1);
+      toPrint.forEach(row => console.log(row));
     }
   }
 
@@ -114,4 +115,4 @@ class CsvService {
     .where({ header: 'density', transformer: val => parseInt(val) })
     .sort({ where: { header: 'density' }, by: 'DESC' })
     .format()
-    .print();
+    .print({ withHeaders: false });
