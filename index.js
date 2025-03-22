@@ -7,7 +7,6 @@ class CsvService {
       this.headers = [];
       this.rows = [];
       this.formattedRows = [];
-      this.parseCsv();
     }
   
     /**
@@ -18,6 +17,7 @@ class CsvService {
       const lines = this.rawData.split('\n');
       this.headers = lines.shift().split(delimiter);
       this.rows = lines.map(line => line.split(delimiter).map(cell => cell.trim()));
+      return this;
     }
   
     /**
@@ -109,6 +109,7 @@ class CsvService {
   // 3) Formatter hardcoded
   
   const csvClient = new CsvService(data)
+    .parseCsv()
     .where({ header: 'density', transformer: val => parseInt(val) })
     .sort({ where: { header: 'density' }, by: 'DESC' })
     .format()
