@@ -65,6 +65,27 @@ class CsvService {
       });
       return this;
     }
+
+   /**
+   * Add a custom column with given values.
+   * @param {Object} options
+   * @param {string} [options.header='newColumn'] - The column header
+   * @param {Array} options.values - The values for the new column
+   * @returns {CsvService}
+   */
+  addColumn({ header = '', values }) {
+    if (values.length !== this.rows.length) {
+      throw new Error('The number of values must match the number of rows');
+    }
+
+    this.headers.push(header);
+    this.rows = this.rows.map((row, index) => {
+      row.push(values[index]);
+      return row;
+    });
+
+    return this;
+  }
   
     format() {
       const columnWidths = this.headers.map((_, i) => {
@@ -107,7 +128,7 @@ class CsvService {
 
   // TODO: 
   // 1) Doesn't work with all the types of data
-  // 2) Doesn't allow you to add new columns (it was a task)
+  // 2) Doesn't allow you to add transformers to custom columns (here we need to calculate the percentage of all densities)
   // 3) Formatter hardcoded
   
   const csvClient = new CsvService(data)
@@ -115,4 +136,4 @@ class CsvService {
     .where({ header: 'density', transformer: val => parseInt(val) })
     .sort({ where: { header: 'density' }, by: 'DESC' })
     .format()
-    .print({ withHeaders: false });
+    .print({ withHeaders: true });
