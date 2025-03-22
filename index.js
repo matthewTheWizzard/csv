@@ -1,12 +1,13 @@
 class CsvService {
+    headers = [];
+    rows = [];
+    formattedRows = [];
+
     /**
      * @param {string} csvData - CSV string data
      */
     constructor(csvData) {
       this.rawData = csvData;
-      this.headers = [];
-      this.rows = [];
-      this.formattedRows = [];
     }
   
     /**
